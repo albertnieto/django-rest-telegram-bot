@@ -1,2 +1,3 @@
 # mf telegram bot
- Multi-functional bot
+# Author: dmanas0
+Multi-functional bot

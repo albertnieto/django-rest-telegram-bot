@@ -1,10 +1,12 @@
 import os
 import requests
+from dotenv import load_dotenv
 import telebot
 import src.video as vid
 import src.filters as fi
 
-API_KEY = '5523440147:AAE8vNSrLFIp-lPbO3JHA_kA0-OrTcIHowQ'
+load_dotenv()
+API_KEY = os.getenv('API_KEY')
 bot = telebot.TeleBot(API_KEY)
 
 
@@ -29,11 +31,13 @@ def handle_video(message):
     video = open("data/media/tmp_out.mp4", 'rb')
     status = requests.post(url, data=data, files={"video": video})
 
-    #bot.send_video(chat_id=message.chat.id, video=url, reply_to_message_id=message.id)
+    bot.send_video(chat_id=message.chat.id, video=url, reply_to_message_id=message.id)
 
 
-@bot.message_handler(func=fi.filter)
+@bot.message_handler(func=fi.filter_message)
 def send_text(message):
-    bot.reply_to(message, "Buenas")
+    text = fi.filter_message(message, handler=False)
+    bot.reply_to(message, text)
+
 
 bot.infinity_polling()

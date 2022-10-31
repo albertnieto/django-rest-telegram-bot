@@ -11,8 +11,19 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
+import mongoengine
 from pathlib import Path
 from dotenv import load_dotenv
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+mongoengine.connect(
+    db=os.environ.get("DB_NAME"),
+    host=os.environ.get("DB_HOST"),
+    username=os.environ.get("DB_USER"),
+    password=os.environ.get("DB_PASS")
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,7 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "mfb_telegram"
+    "api"
 ]
 
 MIDDLEWARE = [
@@ -77,12 +88,7 @@ WSGI_APPLICATION = "api.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+DATABASES = {}
 
 
 # Password validation

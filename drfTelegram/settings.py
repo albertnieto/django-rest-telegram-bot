@@ -13,11 +13,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 import mongoengine
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from pathlib import Path
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-load_dotenv(dotenv_path)
+load_dotenv(find_dotenv())
 
 mongoengine.connect(
     db=os.environ.get("DB_NAME"),

@@ -2,6 +2,7 @@ import json
 import os
 
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.decorators import authentication_classes
 from drfTelegram.api.authentication import SessionCsrfExemptAuthentication
@@ -13,10 +14,9 @@ TUTORIAL_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "error_token")
 @api_view(["POST"])
 @authentication_classes([SessionCsrfExemptAuthentication])
 def webhookView(request):
-    def post(self, request, *args, **kwargs):
-        """
-        Return a list of all users.
-        """
-        print(request.body)
+    if request.method == 'POST':
+        # Arrives in bytes, have to decode
+        content = json.loads(request.body)
+        print(content)
         #usernames = [user.username for user in User.objects.all()]
-        return Response("usernames")
+        return Response(status=status.HTTP_201_CREATED)

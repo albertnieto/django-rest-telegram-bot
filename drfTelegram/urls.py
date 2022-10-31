@@ -19,5 +19,5 @@ from drfTelegram.api.views import webhookView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("webhook/", webhookView)
+    path("webhooks/", webhookView)
 ]

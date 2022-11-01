@@ -20,3 +20,14 @@ def webhookView(request):
         print(content)
         #usernames = [user.username for user in User.objects.all()]
         return Response(status=status.HTTP_201_CREATED)
+
+
+def send_message(message, request, chat_id):
+    data = {
+        "chat_id": chat_id,
+        "text": message,
+        "parse_mode": "Markdown",
+    }
+    response = request.post(
+        f"{TELEGRAM_URL}{TUTORIAL_BOT_TOKEN}/sendMessage", data=data
+    )

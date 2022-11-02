@@ -1,5 +1,6 @@
 from mongoengine import *
 
+
 # Create your models here.
 class Pole(EmbeddedDocument):
     type = StringField(max_length=30)

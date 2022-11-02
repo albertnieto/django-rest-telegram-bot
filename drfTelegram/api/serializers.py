@@ -6,6 +6,7 @@ from drfTelegram.api.views import (
     Telegram_Group,
 )
 
+
 class PoleSerializer(serializers.EmbeddedDocumentSerializer):
     class Meta:
         model = Pole

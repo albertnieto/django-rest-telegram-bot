@@ -9,9 +9,9 @@ class Pole(EmbeddedDocument):
 
 class Coin(EmbeddedDocument):
     name = StringField(max_length=30)
-    emoji = StringField(max_length=30)
+    date_time = ComplexDateTimeField()
 
-class User(Document):
+class Telegram_User(Document):
     telegram_id = IntField()
     is_bot = BooleanField()
     first_name = ListField(StringField(max_length=50))
@@ -20,7 +20,7 @@ class User(Document):
     poles = ListField(EmbeddedDocumentField(Pole))
     coins = ListField(EmbeddedDocumentField(Coin))
 
-class Group(Document):
+class Telegram_Group(Document):
     telegram_id = IntField()
     title = ListField(StringField(max_length=50))
     type = StringField(max_length=30)

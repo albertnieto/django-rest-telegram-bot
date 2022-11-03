@@ -1,33 +1,26 @@
 import json
-import os
-
-from rest_framework.response import Response
+import logging
 from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.decorators import authentication_classes
+from rest_framework.response import Response
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+)
+from rest_framework_mongoengine import viewsets
 from drfTelegram.api.authentication import SessionCsrfExemptAuthentication
+from drfTelegram.api.utils import (
+    MF_FIELDS_KEYS,
+    filter_json,
+)
 
-TELEGRAM_URL = "https://api.telegram.org/bot"
-TUTORIAL_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "error_token")
 
-# https://api.telegram.org/bot<token>/setWebhook?url=<url>/webhooks/tutorial/
+logger = logging.getLogger(__name__)
+
+
 @api_view(["POST"])
 @authentication_classes([SessionCsrfExemptAuthentication])
 def webhookView(request):
-    if request.method == 'POST':
-        # Arrives in bytes, have to decode
-        content = json.loads(request.body)
-        print(content)
-        #usernames = [user.username for user in User.objects.all()]
-        return Response(status=status.HTTP_201_CREATED)
-
-
-def send_message(message, request, chat_id):
-    data = {
-        "chat_id": chat_id,
-        "text": message,
-        "parse_mode": "Markdown",
-    }
-    response = request.post(
-        f"{TELEGRAM_URL}{TUTORIAL_BOT_TOKEN}/sendMessage", data=data
-    )
+    # Arrives in bytes, have to decode
+    content = filter_json(request.body, MF_FIELDS_KEYS)
+    print("view", content)
+    return Response(status=status.HTTP_201_CREATED)

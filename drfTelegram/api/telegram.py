@@ -3,9 +3,6 @@ import os
 import logging
 from dotenv import load_dotenv, find_dotenv
 from typing import Any
-from drfTelegram.api.utils import (
-    custom_update_mf,
-)
 
 load_dotenv(find_dotenv())
 logger = logging.getLogger(__name__)
@@ -21,20 +18,20 @@ WH_ROUTE = os.getenv("WH_ROUTE")
 # Webhook URL
 WH_URL = f"{TG_URL}{TG_TOKEN}/setWebhook?url={HOST_URL}/{WH_ROUTE}"
 
-@custom_update_mf
+
 class CustomUpdateMF():
     def __init__(
         self,
         user_id,
-        user_is_bot,
-        user_first_name,
-        username,
-        chat_id,
-        chat_title,
-        chat_type,
-        date,
-        text,
-        entity_type,
+        user_is_bot=None,
+        user_first_name=None,
+        username=None,
+        chat_id=None,
+        chat_title=None,
+        chat_type=None,
+        date=None,
+        text=None,
+        entity_type=None,
     ):
         self.user_id = user_id
         self.user_is_bot = user_is_bot

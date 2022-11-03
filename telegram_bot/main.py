@@ -4,8 +4,18 @@ import os
 import logging
 import re
 from dotenv import load_dotenv, find_dotenv
-from typing import Any
-from datetime import datetime
+from django_rest_telegram.api.models import (
+    Pole,
+    Coin,
+    Telegram_User,
+    Telegram_Group,
+)
+from telegram_bot.static import (
+    REGEX_FILTERS,
+)
+from telegram_bot.pole import (
+    poleType,
+)
 
 load_dotenv(find_dotenv())
 logger = logging.getLogger(__name__)
@@ -48,20 +58,28 @@ class CustomUpdateMF():
         self.entity_type = entity_type
 
 class Dispatcher():
+    # Telegram sends unix timestamp
+    #date = update["message"]["date"]
+    #date = datetime.utcfromtimestamp(date).strftime("%Y-%m-%d %H:%M:%S.%f%z (%Z) - ")
     pass
 
 def dispatch(update):
+    def filter(text):
+        for _, _regex in REGEX_FILTERS.items():
+            if re.match(_regex, text):
+                return True
+
     logger.info(update)
-    if "message" in update:
-        if "text" in update["message"]:
-            text = update["message"]["text"]
-            regex = r".*[pP][oO][lL][eE].*"
-            if re.match(regex, text):
-                date = update["message"]["date"]
-                # Telegram sends unix timestamp
-                date = datetime.utcfromtimestamp(date).strftime("%Y-%m-%d %H:%M:%S.%f%z (%Z) - ")
-                chat_id = update["message"]["chat"]["id"]
-                send_message(date, chat_id)
+    text = update["message"]["text"]
+
+    # Change to case
+    if filter(text):        
+        pole = poleType(text)
+        user = update["message"]["from"]["first_name"]
+        message = f"El usuario {user} ha hecho la {pole}"
+        chat_id = update["message"]["chat"]["id"]
+        send_message(message, chat_id)
+
 
 def send_message(message, chat_id):
     data = {

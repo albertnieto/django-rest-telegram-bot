@@ -1,20 +1,4 @@
-from functools import wraps
 import json
-
-MF_FIELDS = {
-    "message_from_id":"tg_user_id",
-    "message_from_is_bot":"tg_is_bot",
-    "message_from_first_name":"tg_first_name",
-    "message_from_username":"tg_username",
-    "message_chat_id":"tg_group_id",
-    "message_chat_title":"tg_group_title",
-    "message_chat_type":"tg_group_type",
-    "message_date":"tg_date_time",
-    "message_text":"tg_message",
-    "message_entities_type":"tg_entity_type",
-}
-
-MF_FIELDS_KEYS = MF_FIELDS.keys()
 
 def is_parent(value):
     return isinstance(value, dict)

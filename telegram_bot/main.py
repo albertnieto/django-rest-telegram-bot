@@ -1,8 +1,11 @@
 import json
+import requests
 import os
 import logging
+import re
 from dotenv import load_dotenv, find_dotenv
 from typing import Any
+from datetime import datetime
 
 load_dotenv(find_dotenv())
 logger = logging.getLogger(__name__)
@@ -47,14 +50,27 @@ class CustomUpdateMF():
 class Dispatcher():
     pass
 
-def send_message(message, request, chat_id):
+def dispatch(update):
+    logger.info(update)
+    if "message" in update:
+        if "text" in update["message"]:
+            text = update["message"]["text"]
+            regex = r".*[pP][oO][lL][eE].*"
+            if re.match(regex, text):
+                date = update["message"]["date"]
+                # Telegram sends unix timestamp
+                date = datetime.utcfromtimestamp(date).strftime("%Y-%m-%d %H:%M:%S.%f%z (%Z) - ")
+                chat_id = update["message"]["chat"]["id"]
+                send_message(date, chat_id)
+
+def send_message(message, chat_id):
     data = {
         "chat_id": chat_id,
         "text": message,
         "parse_mode": "Markdown",
     }
-    response = request.post(
-        f"{TG_URL}/{TG_TOKEN}/sendMessage", data=data
+    response = requests.post(
+        f"{TG_URL}{TG_TOKEN}/sendMessage", data=data
     )
-    logger.log(response)
+    logger.info(response)
     return response

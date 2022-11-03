@@ -12,6 +12,9 @@ from django_rest_telegram.api.utils import (
     MF_FIELDS_KEYS,
     filter_json,
 )
+from telegram_bot.main import (
+    dispatch,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -21,6 +24,6 @@ logger = logging.getLogger(__name__)
 @authentication_classes([SessionCsrfExemptAuthentication])
 def webhookView(request):
     # Arrives in bytes, have to decode
-    content = filter_json(request.body, MF_FIELDS_KEYS)
-    print("view", content)
+    # content = filter_json(request.body, MF_FIELDS_KEYS)
+    dispatch(json.loads(request.body))
     return Response(status=status.HTTP_201_CREATED)

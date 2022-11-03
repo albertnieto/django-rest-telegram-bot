@@ -9,7 +9,6 @@ from rest_framework.decorators import (
 from rest_framework_mongoengine import viewsets
 from django_rest_telegram.api.authentication import SessionCsrfExemptAuthentication
 from django_rest_telegram.api.utils import (
-    MF_FIELDS_KEYS,
     filter_json,
 )
 from telegram_bot.main import (
@@ -25,5 +24,8 @@ logger = logging.getLogger(__name__)
 def webhookView(request):
     # Arrives in bytes, have to decode
     # content = filter_json(request.body, MF_FIELDS_KEYS)
-    dispatch(json.loads(request.body))
+    update = json.loads(request.body)
+    if "message" in update:
+            if "text" in update["message"]:
+                dispatch(update)
     return Response(status=status.HTTP_201_CREATED)

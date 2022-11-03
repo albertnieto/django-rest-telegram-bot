@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     'rest_framework_mongoengine',
-    "drfTelegram.api"
+    "django_rest_telegram.api"
 ]
 
 MIDDLEWARE = [
@@ -53,7 +53,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "drfTelegram.urls"
+ROOT_URLCONF = "django_rest_telegram.urls"
 
 TEMPLATES = [
     {
@@ -71,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "drfTelegram.wsgi.application"
+WSGI_APPLICATION = "django_rest_telegram.wsgi.application"
 
 
 # Database

@@ -2,7 +2,7 @@ import os
 from django.contrib import admin
 from django.urls import path
 from dotenv import load_dotenv, find_dotenv
-from drfTelegram.api.views import webhookView
+from django_rest_telegram.api.views import webhookView
 
 load_dotenv(find_dotenv())
 

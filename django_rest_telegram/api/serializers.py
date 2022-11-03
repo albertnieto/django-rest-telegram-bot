@@ -1,5 +1,5 @@
 from rest_framework_mongoengine import serializers
-from drfTelegram.api.views import (
+from django_rest_telegram.api.views import (
     Pole,
     Coin,
     Telegram_User,
@@ -32,7 +32,7 @@ class Telegram_UserSerializer(serializers.EmbeddedDocumentSerializer):
             "tg_is_bot", 
             "tg_first_name",
             "tg_username",
-            "tg_user_groups_id",
+            "user_groups_id",
             "poles",
             "coins",
         ]

@@ -7,8 +7,8 @@ from rest_framework.decorators import (
     authentication_classes,
 )
 from rest_framework_mongoengine import viewsets
-from drfTelegram.api.authentication import SessionCsrfExemptAuthentication
-from drfTelegram.api.utils import (
+from django_rest_telegram.api.authentication import SessionCsrfExemptAuthentication
+from django_rest_telegram.api.utils import (
     MF_FIELDS_KEYS,
     filter_json,
 )

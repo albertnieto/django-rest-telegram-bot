@@ -70,7 +70,7 @@ class PoleHandler():
 
     def _coin_exists_in_db(self) -> bool:
         count = Coin.objects(
-            name=self._get_pole_coins(),
+            name=POLE_WITH_COIN[self.pole_type],
             date=self.tg_date,
         ).count()
 
@@ -158,7 +158,7 @@ class PoleHandler():
 
     def create_message_string(self) -> str:
         string = "El *usuario* [{}](tg://user?id={}) ha hecho la **{}** 🎉\n".format(self.first_name,self.telegram_user_id, self.pole_type)
-        string += "✨ Has ganado **`{} puntos`** ✨".format(self._get_pole_coins())
+        string += "✨ Has ganado **`{} puntos`** ✨".format(self._get_pole_points())
         if self.coin:
             string += "\nTambién has ganado una **{}** ".format(POLE_WITH_COIN[self.pole_type])
         return string, self.chat_id

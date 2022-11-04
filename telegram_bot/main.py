@@ -4,17 +4,12 @@ import os
 import logging
 import re
 from dotenv import load_dotenv, find_dotenv
-from django_rest_telegram.api.models import (
-    Pole,
-    Coin,
-    Telegram_User,
-    Telegram_Group,
-)
 from telegram_bot.static import (
     REGEX_FILTERS,
 )
 from telegram_bot.pole import (
-    poleType,
+    filter_Pole_from_text,
+    PoleHandler,
 )
 
 load_dotenv(find_dotenv())
@@ -31,39 +26,11 @@ WH_ROUTE = os.getenv("WH_ROUTE")
 # Webhook URL
 WH_URL = f"{TG_URL}{TG_TOKEN}/setWebhook?url={HOST_URL}/{WH_ROUTE}"
 
-
-class CustomUpdateMF():
-    def __init__(
-        self,
-        user_id,
-        user_is_bot=None,
-        user_first_name=None,
-        username=None,
-        chat_id=None,
-        chat_title=None,
-        chat_type=None,
-        date=None,
-        text=None,
-        entity_type=None,
-    ):
-        self.user_id = user_id
-        self.user_is_bot = user_is_bot
-        self.user_first_name = user_first_name
-        self.username = username
-        self.chat_id = chat_id
-        self.chat_title = chat_title
-        self.chat_type = chat_type
-        self.date = date
-        self.text = text
-        self.entity_type = entity_type
-
 class Dispatcher():
-    # Telegram sends unix timestamp
-    #date = update["message"]["date"]
-    #date = datetime.utcfromtimestamp(date).strftime("%Y-%m-%d %H:%M:%S.%f%z (%Z) - ")
     pass
 
 def dispatch(update):
+    # Add command case
     def filter(text):
         for _, _regex in REGEX_FILTERS.items():
             if re.match(_regex, text):
@@ -74,11 +41,11 @@ def dispatch(update):
 
     # Change to case
     if filter(text):        
-        pole = poleType(text)
-        user = update["message"]["from"]["first_name"]
-        message = f"El usuario {user} ha hecho la {pole}"
-        chat_id = update["message"]["chat"]["id"]
-        send_message(message, chat_id)
+        pole_text = filter_Pole_from_text(text)
+        pole = PoleHandler(update, pole_text)
+        if pole.save_to_mongodb():
+            message, chat_id = pole.create_message_string()
+            send_message(message, chat_id)
 
 
 def send_message(message, chat_id):

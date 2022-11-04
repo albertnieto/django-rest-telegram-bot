@@ -23,7 +23,6 @@ logger = logging.getLogger(__name__)
 @authentication_classes([SessionCsrfExemptAuthentication])
 def webhookView(request):
     # Arrives in bytes, have to decode
-    # content = filter_json(request.body, MF_FIELDS_KEYS)
     update = json.loads(request.body)
     if "message" in update:
             if "text" in update["message"]:

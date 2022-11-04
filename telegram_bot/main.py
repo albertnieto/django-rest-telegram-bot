@@ -42,10 +42,11 @@ def dispatch(update):
     # Change to case
     if filter(text):        
         pole_text = filter_Pole_from_text(text)
-        pole = PoleHandler(update, pole_text)
-        if pole.save_to_mongodb():
-            message, chat_id = pole.create_message_string()
-            send_message(message, chat_id)
+        if pole_text:
+            pole = PoleHandler(update, pole_text)
+            if pole.save_to_mongodb():
+                message, chat_id = pole.create_message_string()
+                send_message(message, chat_id)
 
 
 def send_message(message, chat_id):

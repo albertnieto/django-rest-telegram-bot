@@ -68,13 +68,21 @@ class PoleHandler():
 
         return(count>0)
 
+    def _coin_exists_in_db(self) -> bool:
+        count = Coin.objects(
+            name=self._get_pole_coins(),
+            date=self.tg_date,
+        ).count()
+
+        return(count>0)
+
     def _pole_is_valid(self) -> bool:
         pass
 
     def _is_pole_with_coin(self) -> bool:
         return(self.pole_type in POLE_WITH_COIN_LIST)
 
-    def _get_pole_coins(self) -> bool:
+    def _get_pole_points(self) -> bool:
         return(POLE_POINTS[self.pole_type])
 
     '''
@@ -111,7 +119,7 @@ class PoleHandler():
         pole = Pole()
         pole.type = self.pole_type
         pole.telegram_user_id = self.telegram_user_id
-        pole.points = self._get_pole_coins()
+        pole.points = self._get_pole_points()
         pole.date = self.tg_date
         pole.date_time = self.tg_date_time
         pole.save()
@@ -163,7 +171,8 @@ class PoleHandler():
 
         if not self._pole_exists_in_db():
             if self._is_pole_with_coin():
-                self._create_coin()
+                if not self._coin_exists_in_db():
+                    self._create_coin()
 
             self._create_pole()
             #self.user.poles.update_one(push__poles=self.pole)
